@@ -8,9 +8,10 @@ type PokemonProps = {
   hp: number;
   moves: string[];
   weakness: string[];
+  orientation: 'portrait' | 'landscape';
 };
 
-export default function PokemonCards({ name, image, type, hp, moves, weakness }: PokemonProps) {
+const PokemonCards: React.FC<PokemonProps> = ({ name, image, type, hp, moves, weakness, orientation }) => {
   const getTypeDetails = (type: string) => {
     switch (type.toLowerCase()) {
       case "electric":
@@ -29,7 +30,7 @@ export default function PokemonCards({ name, image, type, hp, moves, weakness }:
   const { borderColor, emoji } = getTypeDetails(type);
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, orientation === 'landscape' ? styles.cardLandscape : null]}>
       <View style={styles.nameContent}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.hp}>❤️{hp}</Text>
@@ -45,15 +46,13 @@ export default function PokemonCards({ name, image, type, hp, moves, weakness }:
       </View>
       <View style={styles.movesCont}>
         <Text style={styles.movesText}>Moves: {moves.join(", ")}</Text>
-        
       </View>
       <View style={styles.weakCont}>
         <Text style={styles.weakText}>Weakness: {weakness.join(", ")}</Text>
       </View>
-     
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -76,6 +75,10 @@ const styles = StyleSheet.create({
         elevation: 5,
       },
     }),
+  },
+  cardLandscape: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   nameContent: {
     alignContent: 'center',
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-  movesCont:{
+  movesCont: {
     marginBottom: 16,
     alignContent: 'center',
     paddingVertical: 6,
@@ -136,18 +139,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#000',
   },
-  movesText:{
+  movesText: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#000',
   },
-  weakCont:{
-   marginBottom:8
+  weakCont: {
+    marginBottom: 8,
   },
-  weakText:{
-    fontSize:22,
+  weakText: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#000',
-  }
-
+  },
 });
+
+export default PokemonCards;
